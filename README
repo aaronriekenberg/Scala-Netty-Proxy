@@ -1,0 +1,3 @@
+A TCP proxy implemented in Scala using the Netty library.
+
+Also includes a test client (ScalaTestClient) and server (ScalaTestServer).
