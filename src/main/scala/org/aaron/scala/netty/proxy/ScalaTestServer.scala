@@ -33,10 +33,6 @@ class ScalaTestServer(
 
   private val log = Logger(getClass)
 
-  private val maxFrameLengthBytes = 1 * 1024 * 1024
-
-  private val headerLengthBytes = 4
-
   private val serverBootstrap = new ServerBootstrap(
     serverSocketChannelFactory)
 
