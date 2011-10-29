@@ -5,10 +5,16 @@ import org.jboss.netty.channel.Channel
 import org.jboss.netty.buffer.ChannelBuffers
 import org.jboss.netty.channel.ChannelFutureListener
 
+/**
+ * Useful functions for working with Netty.
+ */
 object NettyUtil {
 
   private val addressPortRE = """^(.*):(.*)$""".r
 
+  /**
+   * Convert a string of the form address:port into an InetSocketAddress.
+   */
   def parseAddressPortString(
     addressPortString: String): InetSocketAddress = {
     addressPortString match {
@@ -20,6 +26,9 @@ object NettyUtil {
     }
   }
 
+  /**
+   * Close the channel after all pending writes are complete.
+   */
   def closeOnFlush(channel: Channel) {
     if (channel.isConnected) {
       channel.write(ChannelBuffers.EMPTY_BUFFER).addListener(

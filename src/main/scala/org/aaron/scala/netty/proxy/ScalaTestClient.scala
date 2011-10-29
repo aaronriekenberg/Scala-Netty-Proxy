@@ -20,8 +20,9 @@ import org.jboss.netty.util.TimerTask
 
 import com.weiglewilczek.slf4s.Logger
 
-// Simple TCP client using Netty.
-
+/**
+ * Simple TCP client using Netty.
+ */
 class ScalaTestClient(
   val clientSocketChannelFactory: ClientSocketChannelFactory,
   val timer: HashedWheelTimer,

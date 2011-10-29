@@ -11,10 +11,11 @@ import org.jboss.netty.handler.codec.string.StringEncoder
 import org.jboss.netty.handler.codec.string.StringDecoder
 import org.jboss.netty.channel.ChannelHandler
 
-// Protocol definition used for sending messages between
-// ScalaTestClient and ScalaTestServer.  Each message consists
-// of a 4 byte header followed by a string up to 1 MB in length.
-
+/**
+ * Protocol definition used for sending messages between ScalaTestClient and
+ * ScalaTestServer.  Each message consists of a 4 byte header followed by a
+ * string.  Maximum length of a messages is 1 MB.
+ */
 object TestProtocol {
 
   val maxFrameLengthBytes = 1 * 1024 * 1024

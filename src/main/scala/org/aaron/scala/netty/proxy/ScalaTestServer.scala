@@ -24,8 +24,9 @@ import org.jboss.netty.util.HashedWheelTimer
 import com.weiglewilczek.slf4s.Logger
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory
 
-// Simple TCP server using Netty.
-
+/**
+ * Simple TCP server using Netty.
+ */
 class ScalaTestServer(
   val serverSocketChannelFactory: ServerSocketChannelFactory,
   val serverAddressPortString: String) {
