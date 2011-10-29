@@ -8,19 +8,10 @@ import org.jboss.netty.bootstrap.ClientBootstrap
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory
 import org.jboss.netty.channel.socket.ClientSocketChannelFactory
 import org.jboss.netty.channel.ChannelHandlerContext
-import org.jboss.netty.channel.ChannelPipeline
-import org.jboss.netty.channel.ChannelPipelineFactory
 import org.jboss.netty.channel.ChannelStateEvent
-import org.jboss.netty.channel.Channels
 import org.jboss.netty.channel.ExceptionEvent
 import org.jboss.netty.channel.MessageEvent
 import org.jboss.netty.channel.SimpleChannelUpstreamHandler
-import org.jboss.netty.handler.codec.frame.LengthFieldBasedFrameDecoder
-import org.jboss.netty.handler.codec.frame.LengthFieldPrepender
-import org.jboss.netty.handler.codec.string.StringDecoder
-import org.jboss.netty.handler.codec.string.StringEncoder
-import org.jboss.netty.handler.logging.LoggingHandler
-import org.jboss.netty.logging.InternalLogLevel
 import org.jboss.netty.logging.InternalLoggerFactory
 import org.jboss.netty.logging.Slf4JLoggerFactory
 import org.jboss.netty.util.HashedWheelTimer
@@ -29,17 +20,16 @@ import org.jboss.netty.util.TimerTask
 
 import com.weiglewilczek.slf4s.Logger
 
+// Simple TCP client using Netty.
+
 class ScalaTestClient(
   val clientSocketChannelFactory: ClientSocketChannelFactory,
   val timer: HashedWheelTimer,
   val serverAddressPortString: String,
-  val reconnectDelaySeconds: Int = 1) {
+  val reconnectDelaySeconds: Int = 1,
+  val numMessagesToSend: Int = 10) {
 
   private val log = Logger(getClass)
-
-  private val maxFrameLengthBytes = 1 * 1024 * 1024
-
-  private val headerLengthBytes = 4
 
   private val clientBootstrap = new ClientBootstrap(
     clientSocketChannelFactory)
@@ -53,28 +43,26 @@ class ScalaTestClient(
     override def channelConnected(ctx: ChannelHandlerContext,
       e: ChannelStateEvent) {
       log.info("channelConnected " + e.getChannel)
-      for (i <- 0 until 10) {
-        e.getChannel().write(
-          "port "
-            + (e.getChannel()
-              .getLocalAddress().asInstanceOf[InetSocketAddress]).getPort
-              + " message " + i)
+      val channelPort = e.getChannel
+        .getLocalAddress.asInstanceOf[InetSocketAddress].getPort
+      for (i <- 0 until numMessagesToSend) {
+        e.getChannel.write("port " + channelPort + " message " + i)
       }
     }
 
     override def channelClosed(ctx: ChannelHandlerContext, e: ChannelStateEvent) {
-      log.info("channelClosed " + e.getChannel())
+      log.info("channelClosed " + e.getChannel)
       timer.newTimeout(new TimerTask {
         override def run(timeout: Timeout) {
           log.info("before connect")
-          clientBootstrap.connect()
+          clientBootstrap.connect
         }
       }, reconnectDelaySeconds, TimeUnit.SECONDS)
     }
 
     override def exceptionCaught(ctx: ChannelHandlerContext, e: ExceptionEvent) {
       log.warn("exceptionCaught " + e.getChannel, e.getCause)
-      e.getChannel().close()
+      e.getChannel.close
     }
 
     override def messageReceived(ctx: ChannelHandlerContext, e: MessageEvent) {
@@ -84,28 +72,12 @@ class ScalaTestClient(
 
   }
 
-  private class ClientPipelineFactory extends ChannelPipelineFactory {
-
-    override def getPipeline: ChannelPipeline =
-      Channels.pipeline(
-
-        new LoggingHandler(InternalLogLevel.DEBUG),
-
-        new LengthFieldPrepender(headerLengthBytes),
-
-        new LengthFieldBasedFrameDecoder(maxFrameLengthBytes, 0,
-          headerLengthBytes, 0, headerLengthBytes),
-
-        new StringEncoder, new StringDecoder,
-
-        new ClientHandler)
-
-  }
-
   def start() {
     InternalLoggerFactory.setDefaultFactory(new Slf4JLoggerFactory)
 
-    clientBootstrap.setPipelineFactory(new ClientPipelineFactory)
+    clientBootstrap.setPipelineFactory(
+      new TestProtocol.TestProtocolPipelineFactory(
+        () => new ClientHandler))
 
     clientBootstrap.setOption("remoteAddress",
       NettyUtil.parseAddressPortString(serverAddressPortString))

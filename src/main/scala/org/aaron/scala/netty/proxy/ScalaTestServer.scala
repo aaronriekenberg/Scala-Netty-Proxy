@@ -24,6 +24,8 @@ import org.jboss.netty.util.HashedWheelTimer
 import com.weiglewilczek.slf4s.Logger
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory
 
+// Simple TCP server using Netty.
+
 class ScalaTestServer(
   val serverSocketChannelFactory: ServerSocketChannelFactory,
   val serverAddressPortString: String) {
@@ -49,12 +51,12 @@ class ScalaTestServer(
     }
 
     override def channelClosed(ctx: ChannelHandlerContext, e: ChannelStateEvent) {
-      log.info("channelClosed " + e.getChannel())
+      log.info("channelClosed " + e.getChannel)
     }
 
     override def exceptionCaught(ctx: ChannelHandlerContext, e: ExceptionEvent) {
       log.warn("exceptionCaught " + e.getChannel, e.getCause)
-      e.getChannel().close()
+      e.getChannel.close
     }
 
     override def messageReceived(ctx: ChannelHandlerContext, e: MessageEvent) {
@@ -65,28 +67,12 @@ class ScalaTestServer(
 
   }
 
-  private class ClientPipelineFactory extends ChannelPipelineFactory {
-
-    override def getPipeline: ChannelPipeline =
-      Channels.pipeline(
-
-        new LoggingHandler(InternalLogLevel.DEBUG),
-
-        new LengthFieldPrepender(headerLengthBytes),
-
-        new LengthFieldBasedFrameDecoder(maxFrameLengthBytes, 0,
-          headerLengthBytes, 0, headerLengthBytes),
-
-        new StringEncoder, new StringDecoder,
-
-        new ClientHandler)
-
-  }
-
   def start() {
     InternalLoggerFactory.setDefaultFactory(new Slf4JLoggerFactory)
 
-    serverBootstrap.setPipelineFactory(new ClientPipelineFactory)
+    serverBootstrap.setPipelineFactory(
+      new TestProtocol.TestProtocolPipelineFactory(
+        () => new ClientHandler))
     serverBootstrap.setOption("reuseAddress", true)
 
     val serverChannel = serverBootstrap.bind(

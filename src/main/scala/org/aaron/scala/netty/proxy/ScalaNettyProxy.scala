@@ -25,6 +25,8 @@ import org.jboss.netty.util.Version
 
 import com.weiglewilczek.slf4s.Logger
 
+// Simple TCP proxy using Netty.
+
 class ScalaNettyProxy(
   val localAddressPortStrings: Seq[String],
   val remoteAddressPortString: String) {
