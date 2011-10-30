@@ -1,9 +1,10 @@
-package org.aaron.scala.netty.proxy
+package org.aaron.scala.netty.proxy.testclient
 
 import java.net.InetSocketAddress
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
+import org.aaron.scala.netty.proxy.NettyUtil
 import org.jboss.netty.bootstrap.ClientBootstrap
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory
 import org.jboss.netty.channel.socket.ClientSocketChannelFactory

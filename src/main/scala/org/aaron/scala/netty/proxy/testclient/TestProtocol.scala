@@ -1,15 +1,15 @@
-package org.aaron.scala.netty.proxy
+package org.aaron.scala.netty.proxy.testclient
 
-import org.jboss.netty.channel.ChannelPipelineFactory
+import org.jboss.netty.channel.ChannelHandler
 import org.jboss.netty.channel.ChannelPipeline
+import org.jboss.netty.channel.ChannelPipelineFactory
 import org.jboss.netty.channel.Channels
+import org.jboss.netty.handler.codec.frame.LengthFieldBasedFrameDecoder
+import org.jboss.netty.handler.codec.frame.LengthFieldPrepender
+import org.jboss.netty.handler.codec.string.StringDecoder
+import org.jboss.netty.handler.codec.string.StringEncoder
 import org.jboss.netty.handler.logging.LoggingHandler
 import org.jboss.netty.logging.InternalLogLevel
-import org.jboss.netty.handler.codec.frame.LengthFieldPrepender
-import org.jboss.netty.handler.codec.frame.LengthFieldBasedFrameDecoder
-import org.jboss.netty.handler.codec.string.StringEncoder
-import org.jboss.netty.handler.codec.string.StringDecoder
-import org.jboss.netty.channel.ChannelHandler
 
 /**
  * Protocol definition used for sending messages between ScalaTestClient and

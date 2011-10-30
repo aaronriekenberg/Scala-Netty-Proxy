@@ -1,28 +1,20 @@
-package org.aaron.scala.netty.proxy
+package org.aaron.scala.netty.proxy.testclient
 
 import java.util.concurrent.Executors
+
+import org.aaron.scala.netty.proxy.NettyUtil
 import org.jboss.netty.bootstrap.ServerBootstrap
-import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory
+import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory
 import org.jboss.netty.channel.socket.ServerSocketChannelFactory
 import org.jboss.netty.channel.ChannelHandlerContext
-import org.jboss.netty.channel.ChannelPipeline
-import org.jboss.netty.channel.ChannelPipelineFactory
 import org.jboss.netty.channel.ChannelStateEvent
-import org.jboss.netty.channel.Channels
 import org.jboss.netty.channel.ExceptionEvent
 import org.jboss.netty.channel.MessageEvent
 import org.jboss.netty.channel.SimpleChannelUpstreamHandler
-import org.jboss.netty.handler.codec.frame.LengthFieldBasedFrameDecoder
-import org.jboss.netty.handler.codec.frame.LengthFieldPrepender
-import org.jboss.netty.handler.codec.string.StringDecoder
-import org.jboss.netty.handler.codec.string.StringEncoder
-import org.jboss.netty.handler.logging.LoggingHandler
-import org.jboss.netty.logging.InternalLogLevel
 import org.jboss.netty.logging.InternalLoggerFactory
 import org.jboss.netty.logging.Slf4JLoggerFactory
-import org.jboss.netty.util.HashedWheelTimer
+
 import com.weiglewilczek.slf4s.Logger
-import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory
 
 /**
  * Simple TCP server using Netty.
