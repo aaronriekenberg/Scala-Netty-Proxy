@@ -90,26 +90,22 @@ class ScalaTestClient(
 
 }
 
-object ScalaTestClientMain {
+object ScalaTestClientMain extends App {
 
   private val log = Logger(getClass)
 
-  def main(args: Array[String]) {
-    args match {
-      case args if args.size == 1 =>
-        val executor = Executors.newCachedThreadPool
-        val timer = new HashedWheelTimer
-        val clientSocketChannelFactory = new NioClientSocketChannelFactory(
-          executor, executor)
-        new ScalaTestClient(
-          timer = timer,
-          clientSocketChannelFactory = clientSocketChannelFactory,
-          serverAddressPortString = args(0)).start
-
-      case _ =>
-        log.warn("Usage: <server address>")
-        exit(1)
-    }
+  if (args.size == 1) {
+    val executor = Executors.newCachedThreadPool
+    val timer = new HashedWheelTimer
+    val clientSocketChannelFactory = new NioClientSocketChannelFactory(
+      executor, executor)
+    new ScalaTestClient(
+      timer = timer,
+      clientSocketChannelFactory = clientSocketChannelFactory,
+      serverAddressPortString = args(0)).start
+  } else {
+    log.warn("Usage: <server address>")
+    sys.exit(1)
   }
 
 }

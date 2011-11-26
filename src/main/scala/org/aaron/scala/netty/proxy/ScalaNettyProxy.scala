@@ -161,21 +161,17 @@ class ScalaNettyProxy(
 
 }
 
-object ScalaNettyProxyMain {
+object ScalaNettyProxyMain extends App {
 
   private val log = Logger(getClass)
 
-  def main(args: Array[String]) {
-    args match {
-      case args if args.size >= 2 =>
-        new ScalaNettyProxy(
-          localAddressPortStrings = args.init,
-          remoteAddressPortString = args.last).start
-
-      case _ =>
-        log.warn("Usage: <local address> [<local address>...] <remote address>")
-        exit(1)
-    }
+  if (args.size >= 2) {
+    new ScalaNettyProxy(
+      localAddressPortStrings = args.init,
+      remoteAddressPortString = args.last).start
+  } else {
+    log.warn("Usage: <local address> [<local address>...] <remote address>")
+    sys.exit(1)
   }
 
 }
