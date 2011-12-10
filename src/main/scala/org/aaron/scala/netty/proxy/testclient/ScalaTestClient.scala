@@ -29,6 +29,7 @@ class ScalaTestClient(
   val timer: HashedWheelTimer,
   val serverAddressPortString: String,
   val reconnectDelaySeconds: Int = 1,
+  val numConnectionsToCreate: Int = 1,
   val numMessagesToSend: Int = 10) {
 
   private val log = Logger(getClass)
@@ -84,7 +85,7 @@ class ScalaTestClient(
     clientBootstrap.setOption("remoteAddress",
       NettyUtil.parseAddressPortString(serverAddressPortString))
 
-    for (i <- 0 until 10) {
+    for (i <- 0 until numConnectionsToCreate) {
       log.info("before connect")
       clientBootstrap.connect
     }
