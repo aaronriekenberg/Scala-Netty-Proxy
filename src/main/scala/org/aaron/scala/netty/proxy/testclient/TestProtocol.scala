@@ -23,7 +23,7 @@ object TestProtocol {
   val headerLengthBytes = 4
 
   class TestProtocolPipelineFactory(
-    val createLastHandler: () => ChannelHandler)
+    lastHandler: => ChannelHandler)
     extends ChannelPipelineFactory {
 
     override def getPipeline: ChannelPipeline =
@@ -38,7 +38,7 @@ object TestProtocol {
 
         new StringEncoder, new StringDecoder,
 
-        createLastHandler())
+        lastHandler)
 
   }
 

@@ -79,13 +79,15 @@ class ScalaTestClient(
 
     clientBootstrap.setPipelineFactory(
       new TestProtocol.TestProtocolPipelineFactory(
-        () => new ClientHandler))
+        new ClientHandler))
 
     clientBootstrap.setOption("remoteAddress",
       NettyUtil.parseAddressPortString(serverAddressPortString))
 
-    log.info("before connect")
-    clientBootstrap.connect
+    for (i <- 0 until 10) {
+      log.info("before connect")
+      clientBootstrap.connect
+    }
   }
 
 }

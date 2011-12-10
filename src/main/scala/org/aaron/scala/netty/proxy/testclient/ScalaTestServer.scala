@@ -61,7 +61,7 @@ class ScalaTestServer(
 
     serverBootstrap.setPipelineFactory(
       new TestProtocol.TestProtocolPipelineFactory(
-        () => new ClientHandler))
+        new ClientHandler))
     serverBootstrap.setOption("reuseAddress", true)
 
     val serverChannel = serverBootstrap.bind(
