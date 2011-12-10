@@ -67,7 +67,7 @@ class ScalaTestServer(
     val serverChannel = serverBootstrap.bind(
       NettyUtil.parseAddressPortString(serverAddressPortString))
 
-    log.info("listening on " + serverChannel)
+    log.info("listening on " + serverChannel.getLocalAddress)
   }
 
 }
