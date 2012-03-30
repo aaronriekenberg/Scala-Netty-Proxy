@@ -20,8 +20,8 @@ import com.weiglewilczek.slf4s.Logger
  * Simple TCP server using Netty.
  */
 class ScalaTestServer(
-  val serverSocketChannelFactory: ServerSocketChannelFactory,
-  val serverAddressPortString: String) {
+  serverSocketChannelFactory: ServerSocketChannelFactory,
+  serverAddressPortString: String) {
 
   private val log = Logger(getClass)
 

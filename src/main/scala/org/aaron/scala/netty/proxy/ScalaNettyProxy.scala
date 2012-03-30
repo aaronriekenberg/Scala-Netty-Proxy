@@ -29,8 +29,8 @@ import com.weiglewilczek.slf4s.Logger
  * Simple TCP proxy using Netty.
  */
 class ScalaNettyProxy(
-  val localAddressPortStrings: Seq[String],
-  val remoteAddressPortString: String) {
+  localAddressPortStrings: Seq[String],
+  remoteAddressPortString: String) {
 
   private val log = Logger(getClass)
 
@@ -59,8 +59,8 @@ class ScalaNettyProxy(
   }
 
   private class ClientChannelHandler(
-    val remoteAddress: InetSocketAddress,
-    val clientSocketChannelFactory: ClientSocketChannelFactory)
+    remoteAddress: InetSocketAddress,
+    clientSocketChannelFactory: ClientSocketChannelFactory)
     extends SimpleChannelUpstreamHandler {
 
     @volatile

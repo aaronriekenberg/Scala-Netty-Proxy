@@ -25,16 +25,16 @@ import com.weiglewilczek.slf4s.Logger
  * Simple TCP client using Netty.
  */
 class ScalaTestClient(
-  val clientSocketChannelFactory: ClientSocketChannelFactory,
-  val timer: HashedWheelTimer,
-  val serverAddressPortString: String,
-  val reconnectDelaySeconds: Int = 1,
-  val numConnectionsToCreate: Int = 1,
-  val numMessagesToSend: Int = 10) {
+  clientSocketChannelFactory: ClientSocketChannelFactory,
+  timer: HashedWheelTimer,
+  serverAddressPortString: String,
+  reconnectDelaySeconds: Int = 1,
+  numConnectionsToCreate: Int = 1,
+  numMessagesToSend: Int = 10) {
 
   private val log = Logger(getClass)
 
-  private val clientBootstrap = new ClientBootstrap(
+  val clientBootstrap = new ClientBootstrap(
     clientSocketChannelFactory)
 
   private class ClientHandler extends SimpleChannelUpstreamHandler {
