@@ -64,7 +64,7 @@ class ScalaNettyProxy(
     extends SimpleChannelUpstreamHandler {
 
     @volatile
-    var remoteChannel: Channel = null
+    private var remoteChannel: Channel = null
 
     override def channelOpen(ctx: ChannelHandlerContext, e: ChannelStateEvent) {
       val clientChannel = e.getChannel
